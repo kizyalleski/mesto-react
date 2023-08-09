@@ -6,7 +6,6 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-
   function handleEditAvatarClick() {
     changeIsEditAvatarPopupOpen(true);
   }
@@ -19,9 +18,19 @@ function App() {
     changeIsAddPlacePopupOpen(true);
   }
 
-  const [isEditAvatarPopupOpen, changeIsEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, changeIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, changeIsAddPlacePopupOpen] = React.useState(false);
+  function closeAllPopups() {
+    changeIsEditAvatarPopupOpen(false);
+    changeIsEditProfilePopupOpen(false);
+    changeIsAddPlacePopupOpen(false);
+    
+  }
+
+  const [isEditAvatarPopupOpen, changeIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [isEditProfilePopupOpen, changeIsEditProfilePopupOpen] =
+    React.useState(false);
+  const [isAddPlacePopupOpen, changeIsAddPlacePopupOpen] =
+    React.useState(false);
 
   return (
     <div className="App">
@@ -32,7 +41,12 @@ function App() {
         onAddPlace={handleAddPlaceClick}
       />
       <Footer />
-      <PopupWithForm name="avatar" title="" isOpened={isEditAvatarPopupOpen}>
+      <PopupWithForm
+        name="avatar"
+        title=""
+        isOpened={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           type="url"
           id="formAvatarLink"
@@ -43,7 +57,12 @@ function App() {
         />
         <span className="formAvatarLink-error form__error form__error_single"></span>
       </PopupWithForm>
-      <PopupWithForm name="profile" title="Редактировать профиль" isOpened={isEditProfilePopupOpen}>
+      <PopupWithForm
+        name="profile"
+        title="Редактировать профиль"
+        isOpened={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           type="text"
           id="formUserName"
@@ -67,7 +86,12 @@ function App() {
         />
         <span className="formUserOccupation-error form__error"></span>
       </PopupWithForm>
-      <PopupWithForm name="card-adding" title="Новое место" isOpened={isAddPlacePopupOpen}>
+      <PopupWithForm
+        name="card-adding"
+        title="Новое место"
+        isOpened={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+      >
         <input
           type="text"
           id="formCardName"
@@ -89,8 +113,11 @@ function App() {
         />
         <span className="formCardUrl-error form__error"></span>
       </PopupWithForm>
-      <PopupWithForm name="confirmation" title="Вы уверены?" isOpened={false}>
-      </PopupWithForm>
+      <PopupWithForm
+        name="confirmation"
+        title="Вы уверены?"
+        isOpened={false}
+      ></PopupWithForm>
       <ImagePopup />
       {/* <template id="elementTemplate">
         <article className="element">
