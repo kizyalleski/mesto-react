@@ -27,8 +27,9 @@ function App() {
     setSelectedCard(false);
   }
 
+  // коллбэк для обработчика клика по изображению (App -> Main -> Card)
   function handleCardClick(cardLink, cardName) {
-    setSelectedCard({ link: cardLink, name: cardName});
+    setSelectedCard({ link: cardLink, name: cardName });
   }
 
   // состояния попапов
@@ -49,29 +50,17 @@ function App() {
   const [userDescription, setUserDescription] = React.useState("");
   const [userAvatar, setUserAvatar] = React.useState("");
 
-  // получение и подстановка начальных данных пользователя
-  React.useEffect(() => {
-    api
-      .getUserData()
-      .then((data) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   // состояние карточек
   const [cards, setCards] = React.useState([]);
 
-  // получение и подстановка начальных карточек
+  // получение и подстановка начальных данных пользователя и карточек
   React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([userData, initialCards]) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+        setCards(initialCards);
       })
       .catch((err) => {
         console.log(err);

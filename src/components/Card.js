@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Card({ name, link, likes, onCardClick }) {
   function handleClick() {
-    onCardClick(link, name);
+    onCardClick(link, name); // (объявлена в Api и передана в Main и далее в Card через пропс)
   }
 
   return (
