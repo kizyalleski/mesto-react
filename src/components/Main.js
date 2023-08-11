@@ -1,24 +1,24 @@
 import React from "react";
+import Card from './Card';
 
 export default function Main(props) {
-
   return (
     <main className="main">
       <section className="profile">
         <div className="profile__user-content">
           <button className="profile__avatar" onClick={props.onEditAvatar}>
             <img
-              src="#"
+              src={props.userAvatar}
               alt="Аватар пользователя"
               className="profile__avatar-image"
             />
           </button>
           <div className="profile__info">
             <h1 id="profileUserName" className="profile__user-name">
-              Жак
+              {props.userName}
             </h1>
             <p id="profileUserOccupation" className="profile__user-occupation">
-              Исследователь
+              {props.userDescription}
             </p>
             <button
               id="editProfileButton"
@@ -37,7 +37,11 @@ export default function Main(props) {
           onClick={props.onAddPlace}
         ></button>
       </section>
-      <section id="elements" className="elements"></section>
+      <section id="elements" className="elements">
+        {props.cards.map((card) => (
+          <Card key={card._id} {...card} />
+        ))}
+      </section>
     </main>
   );
 }
