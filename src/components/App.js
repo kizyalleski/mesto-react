@@ -24,15 +24,25 @@ function App() {
     changeIsEditAvatarPopupOpen(false);
     changeIsEditProfilePopupOpen(false);
     changeIsAddPlacePopupOpen(false);
+    setSelectedCard(false);
+  }
+
+  function handleCardClick(cardLink, cardName) {
+    setSelectedCard({ link: cardLink, name: cardName});
   }
 
   // состояния попапов
   const [isEditAvatarPopupOpen, changeIsEditAvatarPopupOpen] =
     React.useState(false);
+
   const [isEditProfilePopupOpen, changeIsEditProfilePopupOpen] =
     React.useState(false);
+
   const [isAddPlacePopupOpen, changeIsAddPlacePopupOpen] =
     React.useState(false);
+
+  // состояние выбранной карточки
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
   // состояния данных пользователя
   const [userName, setUserName] = React.useState("");
@@ -54,7 +64,7 @@ function App() {
   }, []);
 
   // состояние карточек
-  let [cards, setCards] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
 
   // получение и подстановка начальных карточек
   React.useEffect(() => {
@@ -79,6 +89,7 @@ function App() {
         userDescription={userDescription}
         userAvatar={userAvatar}
         cards={cards}
+        onCardClick={handleCardClick}
       />
       <Footer />
       <PopupWithForm
@@ -158,7 +169,7 @@ function App() {
         title="Вы уверены?"
         isOpened={false}
       ></PopupWithForm>
-      <ImagePopup />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </div>
   );
 }

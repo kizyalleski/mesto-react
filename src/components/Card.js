@@ -1,9 +1,17 @@
 import React from "react";
 
-export default function Card({ name, link, likes}) {
+export default function Card({ name, link, likes, onCardClick }) {
+  function handleClick() {
+    onCardClick(link, name);
+  }
+
   return (
     <article className="element">
-      <button className="element__fullscreen" aria-label="Открыть изображение">
+      <button
+        className="element__fullscreen"
+        aria-label="Открыть изображение"
+        onClick={handleClick}
+      >
         <img className="element__image" alt={name} src={link} />
       </button>
       <button

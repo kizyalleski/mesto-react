@@ -39,7 +39,7 @@ export default function Main(props) {
       </section>
       <section id="elements" className="elements">
         {props.cards.map((card) => (
-          <Card key={card._id} {...card} />
+          <Card key={card._id} onCardClick={props.onCardClick} {...card} />
         ))}
       </section>
     </main>
