@@ -9,22 +9,22 @@ import { api } from "../utils/Api";
 function App() {
   // функции открытия и закрытия попапов
   function handleEditAvatarClick() {
-    changeIsEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    changeIsEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    changeIsAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function closeAllPopups() {
-    changeIsEditAvatarPopupOpen(false);
-    changeIsEditProfilePopupOpen(false);
-    changeIsAddPlacePopupOpen(false);
-    setSelectedCard(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setSelectedCard({ link: "", name: "" });
   }
 
   // коллбэк для обработчика клика по изображению (App -> Main -> Card)
@@ -33,17 +33,17 @@ function App() {
   }
 
   // состояния попапов
-  const [isEditAvatarPopupOpen, changeIsEditAvatarPopupOpen] =
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
 
-  const [isEditProfilePopupOpen, changeIsEditProfilePopupOpen] =
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
 
-  const [isAddPlacePopupOpen, changeIsAddPlacePopupOpen] =
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =
     React.useState(false);
 
   // состояние выбранной карточки
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({ link: "", name: "" });
 
   // состояния данных пользователя
   const [userName, setUserName] = React.useState("");
@@ -83,7 +83,7 @@ function App() {
       <Footer />
       <PopupWithForm
         name="avatar"
-        title=""
+        title="Обновить аватар"
         isOpened={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
       >
