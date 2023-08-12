@@ -4,7 +4,6 @@ import Footer from "./Footer";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
-import { api } from "../utils/Api";
 
 function App() {
   // функции открытия и закрытия попапов
@@ -45,28 +44,6 @@ function App() {
   // состояние выбранной карточки
   const [selectedCard, setSelectedCard] = React.useState({ link: "", name: "" });
 
-  // состояния данных пользователя
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-
-  // состояние карточек
-  const [cards, setCards] = React.useState([]);
-
-  // получение и подстановка начальных данных пользователя и карточек
-  React.useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, initialCards]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(initialCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <div className="App">
       <Header />
@@ -74,10 +51,6 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
-        userName={userName}
-        userDescription={userDescription}
-        userAvatar={userAvatar}
-        cards={cards}
         onCardClick={handleCardClick}
       />
       <Footer />

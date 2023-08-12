@@ -1,24 +1,46 @@
 import React from "react";
-import Card from './Card';
+import Card from "./Card";
+import { api } from "../utils/Api";
 
 export default function Main(props) {
+  // состояния данных пользователя
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
+  const [userAvatar, setUserAvatar] = React.useState("");
+  // состояние карточек
+  const [cards, setCards] = React.useState([]);
+
+  // получение и подстановка начальных данных пользователя и карточек
+  React.useEffect(() => {
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([userData, initialCards]) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+        setCards(initialCards);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <main className="main">
       <section className="profile">
         <div className="profile__user-content">
           <button className="profile__avatar" onClick={props.onEditAvatar}>
             <img
-              src={props.userAvatar}
+              src={userAvatar}
               alt="Аватар пользователя"
               className="profile__avatar-image"
             />
           </button>
           <div className="profile__info">
             <h1 id="profileUserName" className="profile__user-name">
-              {props.userName}
+              {userName}
             </h1>
             <p id="profileUserOccupation" className="profile__user-occupation">
-              {props.userDescription}
+              {userDescription}
             </p>
             <button
               id="editProfileButton"
@@ -38,7 +60,7 @@ export default function Main(props) {
         ></button>
       </section>
       <section id="elements" className="elements">
-        {props.cards.map((card) => (
+        {cards.map((card) => (
           <Card key={card._id} onCardClick={props.onCardClick} {...card} />
         ))}
       </section>
