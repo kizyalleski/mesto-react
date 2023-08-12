@@ -68,7 +68,7 @@ function App() {
           placeholder="Ссылка"
           required
         />
-        <span className="formAvatarLink-error form__error form__error_single"></span>
+        <span className="formAvatarLink-error form__error form__error_single">&nbsp;</span>
       </PopupWithForm>
       <PopupWithForm
         name="profile"
@@ -86,7 +86,7 @@ function App() {
           minLength="2"
           maxLength="40"
         />
-        <span className="formUserName-error form__error"></span>
+        <span className="formUserName-error form__error">&nbsp;</span>
         <input
           type="text"
           id="formUserOccupation"
@@ -97,7 +97,7 @@ function App() {
           minLength="2"
           maxLength="200"
         />
-        <span className="formUserOccupation-error form__error"></span>
+        <span className="formUserOccupation-error form__error">&nbsp;</span>
       </PopupWithForm>
       <PopupWithForm
         name="card-adding"
@@ -115,7 +115,7 @@ function App() {
           minLength="2"
           maxLength="30"
         />
-        <span className="formCardName-error form__error"></span>
+        <span className="formCardName-error form__error">&nbsp;</span>
         <input
           type="url"
           id="formCardUrl"
@@ -124,7 +124,7 @@ function App() {
           placeholder="Ссылка на картинку"
           required
         />
-        <span className="formCardUrl-error form__error"></span>
+        <span className="formCardUrl-error form__error">&nbsp;</span>
       </PopupWithForm>
       <PopupWithForm
         name="confirmation"
