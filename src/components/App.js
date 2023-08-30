@@ -72,14 +72,27 @@ function App() {
   }, []);
 
   // функция лайка
-  function handleCardLike(likes, id) {
+  function handleCardLike(likes, cardId) {
     const isLiked = likes.some((i) => i._id === currentUser.id);
     api
-      .handleLike(id, isLiked)
+      .handleLike(cardId, isLiked)
       .then((newCard) => {
         setCards((state) => {
           // если id карточки совпадает с текущей, то возвращаем ее обновленную версию
-          return state.map((c) => (c._id === id ? newCard : c));
+          return state.map((c) => (c._id === cardId ? newCard : c));
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  // функция удаления лайка
+  function handleCardDelete(cardId) {
+    api.deleteCard(cardId)
+      .then(() => {
+        setCards(state => {
+          return state.filter(card => card._id !== cardId);
         });
       })
       .catch((err) => {
@@ -98,6 +111,7 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
             onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
           />
         </CardsContext.Provider>
         <Footer />

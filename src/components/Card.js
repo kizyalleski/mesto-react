@@ -1,7 +1,7 @@
 import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function Card({ name, link, likes, owner, _id, onCardClick, onCardLike }) {
+export default function Card({ name, link, likes, owner, _id, onCardClick, onCardLike, onCardDelete }) {
   function handleClick() {
     onCardClick(link, name); // (объявлена в Api и передана в Main и далее в Card через пропс)
   }
@@ -14,6 +14,10 @@ export default function Card({ name, link, likes, owner, _id, onCardClick, onCar
   // коллбэк лайка
   function handleLikeClick() {
     onCardLike(likes, _id);
+  }
+  // коллбэк удаления карточки
+  function handleDeleteClick() {
+    onCardDelete(_id);
   }
 
   return (
@@ -30,6 +34,7 @@ export default function Card({ name, link, likes, owner, _id, onCardClick, onCar
           type="button"
           className="element__trash"
           aria-label="Удалить изображение"
+          onClick={handleDeleteClick}
         ></button>
       )}
       <div className="element__description">
