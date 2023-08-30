@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import CardsContext from "../contexts/Cards";
 
 function App() {
   // функции открытия и закрытия попапов
@@ -50,34 +51,55 @@ function App() {
 
   // состояние текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({});
+  // состояние карточек
+  const [cards, setCards] = React.useState([]);
 
-  // эффект получения начальных данных пользователя
+  // эффект получения начальных данных пользователя и карточек
   React.useEffect(() => {
-    api
-      .getUserData()
-      .then((userData) => {
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([userData, initialCards]) => {
         setCurrentUser({
           name: userData.name,
           about: userData.about,
           avatar: userData.avatar,
-          id: userData._id
+          id: userData._id,
         });
+        setCards(initialCards);
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
 
+  // функция лайка
+  function handleCardLike(likes, id) {
+    const isLiked = likes.some((i) => i._id === currentUser.id);
+    api
+      .handleLike(id, isLiked)
+      .then((newCard) => {
+        setCards((state) => {
+          // если id карточки совпадает с текущей, то возвращаем ее обновленную версию
+          return state.map((c) => (c._id === id ? newCard : c));
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-        />
+        <CardsContext.Provider value={cards}>
+          <Main
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+          />
+        </CardsContext.Provider>
         <Footer />
         <PopupWithForm
           name="avatar"

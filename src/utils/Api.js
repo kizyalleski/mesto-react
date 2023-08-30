@@ -72,18 +72,28 @@ class Api {
     });
   }
 
-  addLike(imageId) {
-    return this._request(`/cards/${imageId}/likes`, {
-      method: "PUT",
-      headers: {
-        authorization: this._token,
-      },
-    });
-  }
+  // addLike(imageId) {
+  //   return this._request(`/cards/${imageId}/likes`, {
+  //     method: "PUT",
+  //     headers: {
+  //       authorization: this._token,
+  //     },
+  //   });
+  // }
 
-  deleteLike(imageId) {
+  // deleteLike(imageId) {
+  //   return this._request(`/cards/${imageId}/likes`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       authorization: this._token,
+  //     },
+  //   });
+  // }
+
+  handleLike(imageId, isLiked) {
+    const requestMethod = !isLiked ? "PUT" : "DELETE";
     return this._request(`/cards/${imageId}/likes`, {
-      method: "DELETE",
+      method: requestMethod,
       headers: {
         authorization: this._token,
       },

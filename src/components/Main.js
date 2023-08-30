@@ -1,24 +1,13 @@
 import React from "react";
 import Card from "./Card";
-import { api } from "../utils/Api";
-import CurrentUserContext from '../contexts/CurrentUserContext';
+// import { api } from "../utils/Api";
+import CurrentUserContext from "../contexts/CurrentUserContext";
+import CardsContext from "../contexts/Cards";
 
 export default function Main(props) {
-  // состояние карточек
-  const [cards, setCards] = React.useState([]);
   // контекст текущего пользователя
   const currentUser = React.useContext(CurrentUserContext);
-
-  // получение и подстановка начальных карточек
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then((initialCards) => {
-        setCards(initialCards);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  const cards = React.useContext(CardsContext);
 
   return (
     <main className="main">
@@ -56,8 +45,13 @@ export default function Main(props) {
         ></button>
       </section>
       <section id="elements" className="elements">
-        {cards.map((card) => (
-          <Card key={card._id} onCardClick={props.onCardClick} {...card} />
+        {cards && cards.map((card) => (
+          <Card
+            key={card._id}
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            {...card}
+          />
         ))}
       </section>
     </main>

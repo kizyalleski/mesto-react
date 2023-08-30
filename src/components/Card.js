@@ -1,7 +1,7 @@
 import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function Card({ name, link, likes, owner, onCardClick }) {
+export default function Card({ name, link, likes, owner, _id, onCardClick, onCardLike }) {
   function handleClick() {
     onCardClick(link, name); // (объявлена в Api и передана в Main и далее в Card через пропс)
   }
@@ -11,6 +11,10 @@ export default function Card({ name, link, likes, owner, onCardClick }) {
   const isOwner = owner._id === currentUser.id;
   // определяем лайкнул ли пользователь карточку
   const isLiked = likes.some(i => i._id === currentUser.id);
+  // коллбэк лайка
+  function handleLikeClick() {
+    onCardLike(likes, _id);
+  }
 
   return (
     <article className="element">
@@ -35,6 +39,7 @@ export default function Card({ name, link, likes, owner, onCardClick }) {
             type="button"
             className={`element__like ${isLiked ? 'element__like_active' : ''}`}
             aria-label="Лайк"
+            onClick={handleLikeClick}
           ></button>
           <p className="element__like-counter">{likes.length}</p>
         </div>
