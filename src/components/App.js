@@ -60,6 +60,7 @@ function App() {
           name: userData.name,
           about: userData.about,
           avatar: userData.avatar,
+          id: userData._id
         });
       })
       .catch((err) => {
