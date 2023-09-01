@@ -5,6 +5,7 @@ import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import CardsContext from "../contexts/Cards";
@@ -119,14 +120,31 @@ function App() {
       });
   }
 
+  // функция сабмита формы обновления аватара
+  // принимает на вход реф инпута формы аватара
+  function handleUpdateAvatar(avatarRef) {
+    api.changeAvatar(avatarRef.current.value)
+      .then(data => {
+        setCurrentUser({
+          ...currentUser,
+          avatar: data.avatar
+        });
+        closeAllPopups();
+        avatarRef.current.value = '';
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Header />
         <CardsContext.Provider value={cards}>
           <Main
-            onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
+            onEditAvatar={handleEditAvatarClick}
             onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
             onCardLike={handleCardLike}
@@ -134,28 +152,15 @@ function App() {
           />
         </CardsContext.Provider>
         <Footer />
-        <PopupWithForm
-          name="avatar"
-          title="Обновить аватар"
-          isOpened={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        >
-          <input
-            type="url"
-            id="formAvatarLink"
-            name="avatar-link-input"
-            className="form__input"
-            placeholder="Ссылка"
-            required
-          />
-          <span className="formAvatarLink-error form__error form__error_single">
-            &nbsp;
-          </span>
-        </PopupWithForm>
         <EditProfilePopup
           isOpened={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+        />
+        <EditAvatarPopup
+          isOpened={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
         />
         <PopupWithForm
           name="card-adding"
