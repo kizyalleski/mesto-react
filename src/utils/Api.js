@@ -35,7 +35,7 @@ class Api {
     });
   }
 
-  updateUserData({ formUserName, formUserOccupation }) {
+  updateUserData({ name, about }) {
     return this._request('/users/me', {
       method: "PATCH",
       headers: {
@@ -43,8 +43,8 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: formUserName,
-        about: formUserOccupation,
+        name: name,
+        about: about,
       }),
     });
   }

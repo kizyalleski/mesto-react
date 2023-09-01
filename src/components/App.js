@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import CardsContext from "../contexts/Cards";
@@ -89,14 +90,32 @@ function App() {
 
   // функция удаления лайка
   function handleCardDelete(cardId) {
-    api.deleteCard(cardId)
+    api
+      .deleteCard(cardId)
       .then(() => {
-        setCards(state => {
-          return state.filter(card => card._id !== cardId);
+        setCards((state) => {
+          return state.filter((card) => card._id !== cardId);
         });
       })
       .catch((err) => {
         console.error(err);
+      });
+  }
+
+  // функция сабмита формы обновления данных пользователя
+  function handleUpdateUser(userData) {
+    api
+      .updateUserData(userData)
+      .then((data) => {
+        setCurrentUser({
+          ...currentUser,
+          name: data.name,
+          about: data.about,
+        });
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -133,35 +152,11 @@ function App() {
             &nbsp;
           </span>
         </PopupWithForm>
-        <PopupWithForm
-          name="profile"
-          title="Редактировать профиль"
+        <EditProfilePopup
           isOpened={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            type="text"
-            id="formUserName"
-            name="userNameInput"
-            className="form__input"
-            placeholder="Имя"
-            required
-            minLength="2"
-            maxLength="40"
-          />
-          <span className="formUserName-error form__error">&nbsp;</span>
-          <input
-            type="text"
-            id="formUserOccupation"
-            name="userOccupationInput"
-            className="form__input"
-            placeholder="Род деятельности"
-            required
-            minLength="2"
-            maxLength="200"
-          />
-          <span className="formUserOccupation-error form__error">&nbsp;</span>
-        </PopupWithForm>
+          onUpdateUser={handleUpdateUser}
+        />
         <PopupWithForm
           name="card-adding"
           title="Новое место"
