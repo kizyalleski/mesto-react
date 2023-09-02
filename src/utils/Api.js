@@ -49,7 +49,7 @@ class Api {
     });
   }
 
-  addNewCard(cardName, cardLink) {
+  addNewCard(name, link) {
     return this._request('/cards', {
       method: "POST",
       headers: {
@@ -57,8 +57,8 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: cardName,
-        link: cardLink,
+        name,
+        link
       }),
     });
   }

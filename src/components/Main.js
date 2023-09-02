@@ -1,12 +1,10 @@
 import React from "react";
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import CardsContext from "../contexts/Cards";
 
 export default function Main(props) {
-  // контекст текущего пользователя
+  // контекст текущего пользователя и карточек
   const currentUser = React.useContext(CurrentUserContext);
-  const cards = React.useContext(CardsContext);
 
   return (
     <main className="main">
@@ -44,7 +42,7 @@ export default function Main(props) {
         ></button>
       </section>
       <section id="elements" className="elements">
-        {cards && cards.map((card) => (
+        {props.cards && props.cards.map((card) => (
           <Card
             key={card._id}
             onCardClick={props.onCardClick}

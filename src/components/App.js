@@ -6,9 +6,9 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import CardsContext from "../contexts/Cards";
 
 function App() {
   // функции открытия и закрытия попапов
@@ -59,14 +59,14 @@ function App() {
   // эффект получения начальных данных пользователя и карточек
   React.useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, initialCards]) => {
+      .then(([userData, cardList]) => {
         setCurrentUser({
           name: userData.name,
           about: userData.about,
           avatar: userData.avatar,
           id: userData._id,
         });
-        setCards(initialCards);
+        setCards(cardList);
       })
       .catch((err) => {
         console.error(err);
@@ -122,33 +122,46 @@ function App() {
 
   // функция сабмита формы обновления аватара
   function handleUpdateAvatar(avatarLink) {
-    api.changeAvatar(avatarLink)
-      .then(data => {
+    api
+      .changeAvatar(avatarLink)
+      .then((data) => {
         setCurrentUser({
           ...currentUser,
-          avatar: data.avatar
+          avatar: data.avatar,
         });
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   }
 
+  // функция сабмита формы добавления карточки
+  function handleUpdateCards(name, link) {
+    api
+      .addNewCard(name, link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Header />
-        <CardsContext.Provider value={cards}>
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onEditAvatar={handleEditAvatarClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
-        </CardsContext.Provider>
+        <Main
+          onEditProfile={handleEditProfileClick}
+          onEditAvatar={handleEditAvatarClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          cards={cards}
+        />
         <Footer />
         <EditProfilePopup
           isOpened={isEditProfilePopupOpen}
@@ -160,33 +173,7 @@ function App() {
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         />
-        <PopupWithForm
-          name="card-adding"
-          title="Новое место"
-          isOpened={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-        >
-          <input
-            type="text"
-            id="formCardName"
-            name="card-name-input"
-            className="form__input"
-            placeholder="Название"
-            required
-            minLength="2"
-            maxLength="30"
-          />
-          <span className="formCardName-error form__error">&nbsp;</span>
-          <input
-            type="url"
-            id="formCardUrl"
-            name="card-url-input"
-            className="form__input"
-            placeholder="Ссылка на картинку"
-            required
-          />
-          <span className="formCardUrl-error form__error">&nbsp;</span>
-        </PopupWithForm>
+        <AddPlacePopup isOpened={isAddPlacePopupOpen} onClose={closeAllPopups} onUpdateCards={handleUpdateCards} />
         <PopupWithForm
           name="confirmation"
           title="Вы уверены?"
