@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function EditProfilePopup({ isOpened, onClose, onUpdateUser }) {
+export default function EditProfilePopup({ isOpened, onClose, onUpdateUser, buttonText }) {
   // контекст данных текущего пользователя для значений по умолчанию
   const currentUser = React.useContext(CurrentUserContext);
   // стейт переменные для управляемого компонента формы
@@ -24,7 +24,7 @@ export default function EditProfilePopup({ isOpened, onClose, onUpdateUser }) {
       setName(currentUser.name);
       setDescription(currentUser.about);
     }
-  }, [currentUser]);
+  }, [currentUser, isOpened]);
 
   // обработчик сабмита формы
   function handleSubmit(e) {
@@ -42,6 +42,7 @@ export default function EditProfilePopup({ isOpened, onClose, onUpdateUser }) {
       isOpened={isOpened}
       onClose={onClose}
       onSubmit={handleSubmit}
+      buttonText={'Сохранить'}
     >
       <input
         type="text"

@@ -8,8 +8,14 @@ export default function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar(inputRef.current.value);
-    inputRef.current.value = '';
   }
+  
+  // очищение поля ввода при закрытии попапа
+  React.useEffect(() => {
+    if (!isOpened) {
+      inputRef.current.value = '';
+    }
+  }, [isOpened]);
 
   return (
     <PopupWithForm
@@ -18,6 +24,7 @@ export default function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
       isOpened={isOpened}
       onClose={onClose}
       onSubmit={handleSubmit}
+      buttonText={'Сохранить'}
     >
       <input
         type="url"

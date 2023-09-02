@@ -19,9 +19,15 @@ export default function AddPlacePopup({ isOpened, onClose, onUpdateCards }) {
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateCards(name, link);
-    setName('');
-    setLink('');
   }
+
+  // очищение полей ввода при закрытии попапа
+  React.useEffect(() => {
+    if (!isOpened) {
+      setName('');
+      setLink('');
+    }
+  }, [isOpened]);
 
   return (
     <PopupWithForm
@@ -30,6 +36,7 @@ export default function AddPlacePopup({ isOpened, onClose, onUpdateCards }) {
       isOpened={isOpened}
       onClose={onClose}
       onSubmit={handleSubmit}
+      buttonText={'Создать'}
     >
       <input
         type="text"

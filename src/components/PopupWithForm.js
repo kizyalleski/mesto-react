@@ -1,8 +1,18 @@
 import React from "react";
 
-export default function PopupWithForm({ name, title, isOpened, onClose, onSubmit, children }) {
+export default function PopupWithForm({
+  name,
+  title,
+  isOpened,
+  onClose,
+  onSubmit,
+  buttonText,
+  children,
+}) {
   return (
-    <div className={`popup popup_type_${name} ${isOpened ? 'popup_opened' : ''}`}>
+    <div
+      className={`popup popup_type_${name} ${isOpened ? "popup_opened" : ""}`}
+    >
       <div className="popup__container popup__container_form">
         <button
           type="button"
@@ -14,7 +24,7 @@ export default function PopupWithForm({ name, title, isOpened, onClose, onSubmit
         <form className="form" name={name} onSubmit={onSubmit}>
           {children}
           <button type="submit" className="form__submit">
-            {name === 'card-adding' ? 'Создать' : name === 'confirmation' ? 'Да' : 'Сохранить'}
+            {buttonText}
           </button>
         </form>
       </div>
