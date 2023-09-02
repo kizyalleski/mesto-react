@@ -121,16 +121,14 @@ function App() {
   }
 
   // функция сабмита формы обновления аватара
-  // принимает на вход реф инпута формы аватара
-  function handleUpdateAvatar(avatarRef) {
-    api.changeAvatar(avatarRef.current.value)
+  function handleUpdateAvatar(avatarLink) {
+    api.changeAvatar(avatarLink)
       .then(data => {
         setCurrentUser({
           ...currentUser,
           avatar: data.avatar
         });
         closeAllPopups();
-        avatarRef.current.value = '';
       })
       .catch(err => {
         console.error(err);

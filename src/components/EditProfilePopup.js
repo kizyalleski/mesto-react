@@ -3,7 +3,7 @@ import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 export default function EditProfilePopup({ isOpened, onClose, onUpdateUser }) {
-  // контекст данных текущего пользователя
+  // контекст данных текущего пользователя для значений по умолчанию
   const currentUser = React.useContext(CurrentUserContext);
   // стейт переменные для управляемого компонента формы
   const [name, setName] = React.useState("");

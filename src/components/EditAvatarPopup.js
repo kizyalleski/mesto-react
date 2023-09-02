@@ -7,7 +7,8 @@ export default function EditAvatarPopup({ isOpened, onClose, onUpdateAvatar }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar(inputRef);
+    onUpdateAvatar(inputRef.current.value);
+    inputRef.current.value = '';
   }
 
   return (
